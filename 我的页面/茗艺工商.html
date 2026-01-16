@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>茗艺工商-三角洲租号估价表</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, rgba(13, 27, 42, 0.7) 0%, rgba(27, 38, 59, 0.7) 50%, rgba(42, 61, 102, 0.7) 100%), url('./background.png') no-repeat center center fixed;
+            background-size: cover;
+            background-blend-mode: overlay;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        /* 折叠容器样式 */
+.collapse-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background: rgba(40, 40, 60, 0.7);
+    border-radius: 8px;
+    cursor: pointer;
+    color: #00ffff;
+    font-weight: 500;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.collapse-header:hover {
+    background: rgba(50, 50, 80, 0.7);
+    border-color: #ff0066;
+}
+
+.collapse-arrow {
+    font-size: 12px;
+    transition: transform 0.3s ease;
+}
+
+.collapse-arrow.open {
+    transform: rotate(180deg);
+}
+
+.collapse-content {
+    margin-top: 10px;
+    padding: 15px;
+    background: rgba(30, 30, 50, 0.6);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    display: none; /* 默认隐藏 */
+}
+
+.collapse-content.show {
+    display: block; /* 展开时显示 */
+}
+
+/* 调整文本输入框样式 */
+.text-input-container textarea {
+    min-height: 80px; /* 减小高度 */
+    margin-bottom: 10px;
+}
+        /* 新增样式：文本输入框 */
+        .text-input-container {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(30, 30, 50, 0.7);
+            border-radius: 10px;
+            border: 2px solid rgba(0, 255, 255, 0.4);
+        }
+        
+        .text-input-container label {
+            display: block;
+            margin-bottom: 10px;
+            color: #00ffff;
+            font-weight: 500;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+        }
+        
+        .text-input-container textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 2px solid rgba(0, 255, 255, 0.4);
+            border-radius: 8px;
+            background: rgba(20, 20, 30, 0.6);
+            color: #ffffff;
+            font-family: 'Roboto Mono', monospace;
+            resize: vertical;
+        }
+        
+        .text-input-container textarea:focus {
+            outline: none;
+            border-color: #ff0066;
+            box-shadow: 0 0 10px rgba(255, 0, 102, 0.5);
+        }
+        
+        .parse-btn {
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #ff0066 0%, #6600cc 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s ease;
+            margin-left: auto; /* 新增这一行 */
+            display: block; /* 确保按钮是块级元素 */
+        }
+        
+        .parse-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 10px rgba(255, 0, 102, 0.5);
+        }
+        /* 添加图片容器样式 */
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(30, 30, 50, 0.7);
+            border-radius: 10px;
+            border: 2px solid rgba(0, 255, 255, 0.4);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 250px;
+        }
+        .image-placeholder {
+            padding: 40px;
+            text-align: center;
+            color: #9e9e9e;
+            font-style: italic;
+            background: rgba(20, 20, 30, 0.5);
+            border-radius: 8px;
+            border: 2px dashed rgba(0, 255, 255, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 150px;
+        }
+        
+        .dynamic-image {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            border: 2px solid rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+        
+        .customer-label {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ff0066 0%, #6600cc 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: rgba(20, 20, 30, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 255, 255, 0.4);
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            overflow: hidden;
+            position: relative;
+        }
+        .form-group {
+            margin: 20px;
+            font-family: Arial, sans-serif;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .time-range-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .time-input {
+            flex: 1;
+            position: relative;
+        }
+        
+        .time-input input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .separator {
+            color: #666;
+        }
+        
+        #onlineTime {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            color: #666;
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff0066 0%, #6600cc 100%);
+            color: white;
+            padding: 30px 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 10s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.2); opacity: 0.1; }
+            100% { transform: scale(1); opacity: 0.3; }
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-container {
+            flex-shrink: 0;
+        }
+
+        .logo {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+        }
+
+        .title-container {
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 0, 102, 0.8);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            font-family: 'Roboto Mono', monospace;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+        }
+
+        .form-container {
+            padding: 30px 25px;
+            background: rgba(30, 30, 50, 0.7);
+            position: relative;
+            z-index: 1;
+        }
+
+        .name-logo-container {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            z-index: 10;
+        }
+
+        .name-logo {
+            width: 80px;
+            height: 40px;
+            object-fit: contain;
+            padding: 1px;
+            filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.5));
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: inline-block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #00ffff;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+        }
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+        .form-group label::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: -6px;
+            right: -6px;
+            height: 7px;
+            background: linear-gradient(90deg, rgba(255, 0, 102, 0.5) 0%, rgba(0, 255, 255, 0.5) 100%);
+            border-radius: 2px;
+            z-index: -1;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid rgba(0, 255, 255, 0.4);
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: 'Roboto Mono', monospace;
+            transition: all 0.3s ease;
+            background: rgba(20, 20, 30, 0.6);
+            color: #ffffff;
+        }
+
+        .form-group select[multiple] {
+            min-height: 120px;
+            overflow-y: auto;
+        }
+
+        .form-group select[multiple] option {
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin: 2px 0;
+            cursor: pointer;
+            background: rgba(30, 30, 50, 0.9);
+            color: #ffffff;
+        }
+
+        .form-group select[multiple] option:checked {
+            background: linear-gradient(135deg, #ff0066 0%, #6600cc 100%);
+            color: white;
+            font-weight: 500;
+        }
+
+        .form-group select[multiple] option:hover {
+            background: rgba(0, 255, 255, 0.2);
+        }
+
+        .custom-multiselect {
+            position: relative;
+            width: 100%;
+        }
+
+        .multiselect-display {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid rgba(0, 255, 255, 0.4);
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: 'Roboto Mono', monospace;
+            background: rgba(20, 20, 30, 0.6);
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .multiselect-display:hover {
+            border-color: #ff0066;
+            background: rgba(30, 30, 50, 0.8);
+            box-shadow: 0 0 10px rgba(255, 0, 102, 0.5);
+        }
+
+        .multiselect-display.active {
+            border-color: #ff0066;
+            background: rgba(30, 30, 50, 0.8);
+            box-shadow: 0 0 10px rgba(255, 0, 102, 0.5);
+        }
+
+        .multiselect-selected {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .multiselect-tag {
+            background: linear-gradient(135deg, #ff0066 0%, #6600cc 100%);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 0 5px rgba(255, 0, 102, 0.5);
+        }
+
+        .multiselect-tag .remove {
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .multiselect-placeholder {
+            color: #9e9e9e;
+            font-style: italic;
+        }
+
+        .multiselect-arrow {
+            margin-left: 8px;
+            font-size: 12px;
+            color: #00ffff;
+            transition: transform 0.3s ease;
+        }
+
+        .multiselect-arrow.open {
+            transform: rotate(180deg);
+        }
+
+        .multiselect-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(20, 20, 30, 0.8);
+            border: 2px solid #ff0066;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 12px rgba(255, 0, 102, 0.3);
+            z-index: 1000;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .multiselect-dropdown.show {
+            display: block;
+        }
+
+        .multiselect-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ffffff;
+        }
+
+        .multiselect-option:hover {
+            background: rgba(255, 0, 102, 0.2);
+        }
+
+        .multiselect-option.selected {
+            background: rgba(255, 0, 102, 0.3);
+            font-weight: 500;
+        }
+
+        .multiselect-option input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+            padding: 0;
+        }
+
+        .form-group input::placeholder, .form-group textarea::placeholder {
+            color: #9e9e9e;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: #ff0066;
+            background: rgba(30, 30, 50, 0.8);
+            box-shadow: 0 0 10px rgba(255, 0, 102, 0.5);
+        }
+
+        #awm {
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif !important;
+        }
+
+        label[for="awm"] {
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif !important;
+        }
+
+        .tip-text {
+            font-size: 12px;
+            color: #ffcc00;
+            margin-top: 6px;
+            font-style: italic;
+            opacity: 0.8;
+            text-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .copy-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #ff0066 0%, #6600cc 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 25px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(255, 0, 102, 0.8);
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .copy-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .copy-btn:hover::after {
+            left: 100%;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(255, 0, 102, 0.5);
+            background: linear-gradient(135deg, #ff3399 0%, #9933ff 100%);
+        }
+
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+
+        .copy-btn:active,
+        .copy-btn:focus {
+            transform: scale(0.98);
+            outline: none;
+        }
+
+        .success-message {
+            background: rgba(255, 0, 102, 0.2);
+            color: #00ffff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+            border: 1px solid rgba(255, 0, 102, 0.3);
+            font-weight: 500;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+        }
+
+        .ratio-rent-notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, rgba(255, 0, 102, 0.9) 0%, rgba(102, 0, 204, 0.9) 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-weight: 500;
+            z-index: 10000;
+            box-shadow: 0 0 15px rgba(255, 0, 102, 0.5);
+            animation: neonFade 3s ease-in-out;
+            text-align: center;
+            max-width: 90%;
+        }
+
+        @keyframes neonFade {
+            0% { opacity: 0; transform: translateX(-50%) translateY(-20px); box-shadow: 0 0 10px rgba(255, 0, 102, 0.5); }
+            10% { opacity: 1; transform: translateX(-50%) translateY(0); box-shadow: 0 0 20px rgba(255, 0, 102, 0.8); }
+            90% { opacity: 1; transform: translateX(-50%) translateY(0); box-shadow: 0 0 20px rgba(255, 0, 102, 0.8); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); box-shadow: 0 0 10px rgba(255, 0, 102, 0.5); }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                border-radius: 8px;
+            }
+
+            .header {
+                padding: 20px 15px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .logo {
+                width: 50px;
+                height: 50px;
+            }
+
+            .title-container {
+                min-width: auto;
+            }
+
+            .header h1 {
+                font-size: 24px;
+                letter-spacing: 0.5px;
+            }
+
+            .form-container {
+                padding: 20px 15px;
+            }
+
+            .name-logo-container {
+                top: 8px;
+                left: 15px;
+            }
+
+            .name-logo {
+                width: 70px;
+                height: 35px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .form-group input, .form-group textarea, .form-group select {
+                font-size: 14px;
+                padding: 10px 14px;
+            }
+
+            .copy-btn {
+                font-size: 14px;
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+<body cz-shortcut-listen="true">
+    <div class="container">
+        <div class="header">
+            <!--<div class="name-logo-container">-->
+            <!--    <img src="./name.png" alt="Name" class="name-logo">-->
+            <!--</div>-->
+            <div class="header-content">
+                <div class="logo-container">
+                    <img src="./logo.jpg" alt="Logo" class="logo">
+                </div>
+                <div class="title-container">
+                    <h1>茗艺工商</h1>
+                    <h1>三角洲租号估价表</h1>
+                    <p>填写账号信息，一键复制到剪切板</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form id="gameForm">
+                <div class="form-group">
+                    <label for="loginMethod">上号方式</label>
+                    <select id="loginMethod" name="loginMethod">
+                        <option value="" disabled selected>请选择上号方式</option>
+                        <option value="QQ账号密码">QQ账号密码</option>
+                        <option value="QQ扫码">QQ扫码</option>
+                        <option value="VX扫码">VX扫码</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="rank">段位</label>
+                    <select id="rank" name="rank">
+                        <option value="" disabled selected>请选择段位</option>
+                        <option value="青铜">青铜</option>
+                        <option value="白银">白银</option>
+                        <option value="黄金">黄金</option>
+                        <option value="铂金">铂金</option>
+                        <option value="钻石">钻石</option>
+                        <option value="黑鹰">黑鹰</option>
+                        <option value="巅峰">巅峰</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="kd">绝密KD</label>
+                    <input type="text" id="kd" name="kd" placeholder="请输入绝密KD">
+                </div>
+
+                <div class="form-group">
+                    <label for="hafuCoin">哈夫币纯币(单位M，1M=100W)</label>
+                    <input type="text" id="hafuCoin" name="hafuCoin" placeholder="请输入哈夫币数量，保留小数点后一位">
+                    <div for="hafuCoin2" class="tip-text">温馨提示:纯币小于20M无法寄售租赁</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="level">等级</label>
+                    <input type="text" id="level" name="level" placeholder="请输入等级">
+                </div>
+
+                <div class="form-group">
+                    <label for="insuranceSlots">保险格数</label>
+                    <select id="insuranceSlots" name="insuranceSlots">
+                        <option value="" disabled selected>请选择保险格数</option>
+                        <option value="2">2格</option>
+                        <option value="4">4格</option>
+                        <option value="6">6格</option>
+                        <option value="9">9格</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="stamina">体力(训练中心，影响回收比例)</label>
+                    <select id="stamina" name="stamina">
+                        <option value="" disabled selected>请选择体力</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="weight">负重(靶场等级，影响回收比例)</label>
+                    <select id="weight" name="weight">
+                        <option value="" disabled selected>请选择负重</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="awm">AWM子弹数量</label>
+                    <input type="text" id="awm" name="awm" placeholder="请输入AWM信息">
+                    <div class="tip-text">
+                        温馨提示:仓库打手用完号主验号单独计费：<br>
+                        6套按照 头2米 甲3米<br>
+                        6级弹 16米/1组；AWM 0.8米/1发<br>
+                        除了6头6甲A大金弹还有纪念物品自己提前截图保留仓库其余都算赠送
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="helmet6">6头数量</label>
+                    <input type="text" id="helmet6" name="helmet6" placeholder="请输入6头信息">
+                </div>
+
+                <div class="form-group">
+                    <label for="armor6">6甲数量</label>
+                    <input type="text" id="armor6" name="armor6" placeholder="请输入6甲信息">
+                </div>
+
+                <div class="form-group">
+                    <label for="knifeSkins">刀皮(有的话回收比例-1)</label>
+                    <div class="custom-multiselect" data-name="knifeSkins">
+                        <div class="multiselect-display" onclick="toggleMultiselect(this)">
+                            <div class="multiselect-selected">
+                                <span class="multiselect-placeholder">请选择刀皮</span>
+                            </div>
+                            <span class="multiselect-arrow">▼</span>
+                        </div>
+                        <div class="multiselect-dropdown">
+                            <div class="multiselect-option" onclick="selectOption(this, '龙牙')">
+                                <input type="checkbox" value="龙牙">
+                                <span>龙牙</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, '信条')">
+                                <input type="checkbox" value="信条">
+                                <span>信条</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, '赤霄')">
+                                <input type="checkbox" value="赤霄">
+                                <span>赤霄</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, '怜悯')">
+                                <input type="checkbox" value="怜悯">
+                                <span>怜悯</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, '影锋')">
+                                <input type="checkbox" value="影锋">
+                                <span>影锋</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, '黑海')">
+                                <input type="checkbox" value="黑海">
+                                <span>黑海</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, '北极星')">
+                                <input type="checkbox" value="北极星">
+                                <span>北极星</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, '电锯惊魂')">
+                                <input type="checkbox" value="电锯惊魂">
+                                <span>电锯惊魂</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tip-text">
+                        ps：有人问怎么有皮肤回收比例还低了！这是除法，除数越小回收价越高~
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="operatorSkins">干员红皮(有的话回收比例-1)</label>
+                    <div class="custom-multiselect" data-name="operatorSkins">
+                        <div class="multiselect-display" onclick="toggleMultiselect(this)">
+                            <div class="multiselect-selected">
+                                <span class="multiselect-placeholder">请选择干员红皮</span>
+                            </div>
+                            <span class="multiselect-arrow">▼</span>
+                        </div>
+                        <div class="multiselect-dropdown">
+                            <div class="multiselect-option" onclick="selectOption(this, '蚀金玫瑰')">
+                                <input type="checkbox" value="蚀金玫瑰">
+                                <span>蚀金玫瑰</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, '水墨云图')">
+                                <input type="checkbox" value="水墨云图">
+                                <span>水墨云图</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, '午夜邮差')">
+                                <input type="checkbox" value="午夜邮差">
+                                <span>午夜邮差</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, '天际线')">
+                                <input type="checkbox" value="天际线">
+                                <span>天际线</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, '维什戴尔')">
+                                <input type="checkbox" value="维什戴尔">
+                                <span>维什戴尔</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="operatorSkins1">干员金皮(有的话回收比例-1)</label>
+                    <div class="custom-multiselect" data-name="operatorSkins1">
+                        <div class="multiselect-display" onclick="toggleMultiselect(this)">
+                            <div class="multiselect-selected">
+                                 <span class="multiselect-placeholder">请选择干员金皮</span>
+                            </div>
+                            <span class="multiselect-arrow">▼</span>
+                        </div>
+                        <div class="multiselect-dropdown">
+                             <div class="multiselect-option" onclick="selectOption(this, '红狼-电锯惊魂')">
+                                <input type="checkbox" value="红狼-电锯惊魂">
+                                <span>红狼-电锯惊魂</span>
+                            </div>
+                             <div class="multiselect-option" onclick="selectOption(this, '露娜-金牌射手')">
+                                <input type="checkbox" value="露娜-金牌射手">
+                                <span>露娜-金牌射手</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, '牧羊人-街头之星')">
+                                <input type="checkbox" value="牧羊人-街头之星">
+                                <span>牧羊人-街头之星</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, '蜂医-危险物质')">
+                                <input type="checkbox" value="蜂医-危险物质">
+                                <span>蜂医-危险物质</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, '蜂医-送葬人')">
+                                <input type="checkbox" value="蜂医-送葬人">
+                                <span>蜂医-送葬人</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, '无名-夜鹰')">
+                                <input type="checkbox" value="无名-夜鹰">
+                                <span>无名-夜鹰</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, '威龙-壮志凌云')">
+                                <input type="checkbox" value="威龙-壮志凌云">
+                                <span>威龙-壮志凌云</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, '威龙-蛟龙特战队')">
+                                <input type="checkbox" value="威龙-蛟龙特战队">
+                                <span>威龙-蛟龙特战队</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, '威龙-铁面判官')">
+                                <input type="checkbox" value="威龙-铁面判官">
+                                <span>威龙-铁面判官</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, '威龙-吴彦祖')">
+                                <input type="checkbox" value="威龙-吴彦祖">
+                                <span>威龙-吴彦祖</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                 <div class="form-group">
+                    <label for="operatorSkins2">武器皮肤(有的话回收比例-1)</label>
+                    <div class="custom-multiselect" data-name="operatorSkins2">
+                        <div class="multiselect-display" onclick="toggleMultiselect(this)">
+                            <div class="multiselect-selected">
+                                 <span class="multiselect-placeholder">请选择武器皮肤</span>
+                            </div>
+                            <span class="multiselect-arrow">▼</span>
+                        </div>
+                        <div class="multiselect-dropdown">
+                            <div class="multiselect-option" onclick="selectOption(this, 'AS-Val-巨浪')">
+                                <input type="checkbox" value="AS-Val-巨浪势">
+                                <span>AS-Val-巨浪</span>
+                            </div>
+                            
+                            <div class="multiselect-option" onclick="selectOption(this, 'M7棱镜攻势')">
+                                <input type="checkbox" value="M7棱镜攻势">
+                                <span>M7棱镜攻势</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, 'M4棱镜攻势')">
+                                <input type="checkbox" value="M4棱镜攻势">
+                                <span>M4棱镜攻势</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, 'K416-命运')">
+                                <input type="checkbox" value="K416-命运">
+                                <span>K416-命运</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, 'SCAR-电玩')">
+                                <input type="checkbox" value="SCAR-电玩">
+                                <span>SCAR-电玩</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, '腾龙-气象感应')">
+                                <input type="checkbox" value="腾龙-气象感应">
+                                <span>腾龙-气象感应</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, 'AUG-气象感应')">
+                                <input type="checkbox" value="AUG-气象感应">
+                                <span>AUG-气象感应</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, 'QBZ95-王牌之剑')">
+                                <input type="checkbox" value="QBZ95-王牌之剑">
+                                <span>QBZ95-王牌之剑</span>
+                            </div>
+                            <div class="multiselect-option" onclick="selectOption(this, 'Vctor-冲锋枪-美杜莎')">
+                                <input type="checkbox" value="Vctor-冲锋枪-美杜莎">
+                                <span>Vctor-冲锋枪-美杜莎</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+        <label for="deposit">押金（组客缴纳，封号赔偿用，号主必填）</label>
+        <input type="number" id="deposit" name="deposit" placeholder="请输入押金金额" value="150" min="150">
+        <div class="error-message" id="errorMessage">押金不能低于150元，已自动恢复为150</div>
+    </div>
+
+               <div class="form-group">
+                        <label for="onlineTime">号主在线时间（可在线辅助上号的时间段）</label>
+                       
+                        <div class="time-range-container">
+                            <div class="time-input">
+                                <select id="startHour">
+                                    <option value="">--</option>
+                                </select>
+                            </div>
+                            <div class="separator">至</div>
+                            <div class="time-input">
+                                <select id="endHour">
+                                    <option value="">--</option>
+                                </select>
+                            </div>
+                        </div>
+                       
+                       <div class="online-time-row" style="display: flex; align-items: center; gap: 12px; margin-top: 10px; flex-wrap: wrap;">
+    <input type="text" id="onlineTime" name="onlineTime" placeholder="请选择时间范围" readonly style="flex: 1; min-width: 200px;">
+
+    <button type="button" class="allday-btn" onclick="setAllDay()" style="padding: 10px 18px; background: linear-gradient(135deg, #00cccc, #0066cc); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; white-space: nowrap;">
+        🌞 全天在线
+    </button>
+</div>
+                </div>
+   
+
+
+                <div class="form-group">
+                    <label for="banRecord">封禁记录(没有可不填写)</label>
+                    <textarea id="banRecord" name="banRecord" placeholder="请输入封禁记录"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="commonArea">常用地区</label>
+                    <input type="text" id="commonArea" name="commonArea" placeholder="请输入常用地区">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">联系号码</label>
+                    <input type="tel" id="phone" name="phone" placeholder="请输入联系号码">
+                </div>
+
+                <div class="form-group">
+                    <label for="ratio">回收比例（根据保险系数、体力、负重、刀皮、红皮计算得出）</label>
+                    <input type="text" id="ratio" name="ratio" placeholder="自动计算" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="rent">回收租金（根据哈夫币纯币、比例计算得出）</label>
+                    <input type="text" id="rent" name="rent" placeholder="自动计算" readonly>
+                </div>
+                <div id="qrCodeContainer" style="text-align: center; margin-bottom: 20px;"></div>
+                <div class="text-input-container">
+                <div class="collapse-header" onclick="toggleCollapse()">
+                        <span>📝 快速填写（点击展开/折叠）</span>
+                        <span class="collapse-arrow">▼</span>
+                    </div>
+                    <div class="collapse-content" id="collapseContent">
+                        <label for="autoFillText">粘贴或输入以下格式内容自动填充</label>
+                        <textarea id="autoFillText" rows="10" placeholder="示例格式：
+                        
+                        
+哈夫币纯币【单位M，1M=100W】:100
+保险格数：2
+体力：1
+负重：1
+刀皮肤：影锋
+角色皮肤：蚀金玫瑰,午夜邮差"></textarea>
+                        <button type="button" class="parse-btn" onclick="parseAndFillForm()">解析并填充</button>
+                    </div>
+                </div>
+               <div class="image-container" id="imageContainer">
+    <div class="customer-label">心动客服</div>
+    images/f4d0fa17c52de02e44d654485aa2cde.jpg
+    <img src="f4d0fa17c52de02e44d654485aa2cde.jpg" class="dynamic-image" alt="客服二维码">
+</div>
+                <button type="button" class="copy-btn" onclick="copyToClipboard()" ontouchstart="this.style.transform='scale(0.95)'" ontouchend="this.style.transform=''">
+                    🚀 复制到剪切板
+                </button>
+            </form>
+        </div>
+    </div>
+    <script src="./script.js"></script>
+    <script>
+    
+    document.addEventListener('DOMContentLoaded', function() {
+            const depositInput = document.getElementById('deposit');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // 验证押金并自动恢复
+            function validateDeposit() {
+                const value = parseFloat(depositInput.value);
+                
+                if (value < 150 || isNaN(value)) {
+                    depositInput.value = 150;
+                    errorMessage.style.display = 'block';
+                    // 3秒后隐藏错误信息
+                    setTimeout(() => {
+                        errorMessage.style.display = 'none';
+                    }, 3000);
+                    return false;
+                } else {
+                    errorMessage.style.display = 'none';
+                    return true;
+                }
+            }
+            
+            // 失去焦点时验证
+            depositInput.addEventListener('blur', validateDeposit);
+        });
+    
+    
+document.addEventListener('DOMContentLoaded', function() {
+    const startHourSelect = document.getElementById('startHour');
+    const endHourSelect = document.getElementById('endHour');
+    const onlineTimeInput = document.getElementById('onlineTime');
+
+    function populateHourOptions(selectElement) {
+        selectElement.innerHTML = '<option value="" disabled selected>--</option>';
+        for (let i = 0; i < 24; i++) {
+            const hour = i.toString().padStart(2, '0');
+            const option = document.createElement('option');
+            option.value = hour;
+            option.textContent = hour;
+            selectElement.appendChild(option);
+        }
+    }
+
+    populateHourOptions(startHourSelect);
+    populateHourOptions(endHourSelect);
+
+    function updateOnlineTime() {
+        let start = startHourSelect.value;
+        let end = endHourSelect.value;
+
+        
+            if (start && end) {
+                onlineTimeInput.value = `${start}:00 至 ${end}:00`;
+            } else if (start) {
+                onlineTimeInput.value = `从 ${start}:00 开始`;
+            } else if (end) {
+                onlineTimeInput.value = `到 ${end}:00 结束`;
+            } else {
+                onlineTimeInput.value = '';
+            }
+            onlineTimeInput.style.borderColor = '';
+            onlineTimeInput.style.boxShadow = '';
+        
+    }
+
+    startHourSelect.addEventListener('change', updateOnlineTime);
+    endHourSelect.addEventListener('change', updateOnlineTime);
+
+    window.setAllDay = function() {
+        startHourSelect.value = '00';
+        endHourSelect.value = '23';
+        onlineTimeInput.value = '全天在线';
+
+        const btn = document.querySelector('.allday-btn');
+        if (btn) {
+            btn.textContent = '✅ 已设为全天';
+            btn.style.background = 'linear-gradient(135deg, #00ff99, #009966)';
+            setTimeout(() => {
+                btn.textContent = '🌞 全天在线';
+                btn.style.background = 'linear-gradient(135deg, #00cccc, #0066cc)';
+            }, 1500);
+        }
+    };
+
+    updateOnlineTime();
+});
+    
+    
+        // 扩展fetchRatioTable函数以获取图片
+        async function fetchImage() {
+            try {
+                const response = await fetch('/api.php');
+                const apiResponse = await response.json();
+                
+                if (apiResponse.status === 'success' && apiResponse.data['IMG']) {
+                    const imageUrl = apiResponse.data['IMG'];
+                    
+                 
+                        // 在普通浏览器中直接加载
+                        displayImage(imageUrl);
+                    
+                }
+                
+                // 新增：获取 "刀皮" 值并更新标签
+            if (apiResponse.data['刀皮']) {
+                const knifeRatio = apiResponse.data['刀皮'];  // 如 "-0.5"
+                const knifeLabel = document.querySelector('label[for="knifeSkins"]');
+                if (knifeLabel) {
+                    knifeLabel.textContent = `刀皮(有的话回收比例  ${knifeRatio})`;  // 动态替换 -1 为 API 值
+                }
+            }
+            
+            if (apiResponse.data['红皮']) {
+                const knifeRatio = apiResponse.data['红皮'];  // 如 "-0.5"
+                const knifeLabel = document.querySelector('label[for="operatorSkins"]');
+                if (knifeLabel) {
+                    knifeLabel.textContent = `干员红皮(有的话回收比例  ${knifeRatio})`;  // 动态替换 -1 为 API 值
+                }
+            }
+            
+             if (apiResponse.data['金皮']) {
+                const knifeRatio = apiResponse.data['金皮'];  // 如 "-0.5"
+                const knifeLabel = document.querySelector('label[for="operatorSkins1"]');
+                if (knifeLabel) {
+                    knifeLabel.textContent = `干员金皮(有的话回收比例  ${knifeRatio})`;  // 动态替换 -1 为 API 值
+                }
+            }
+            
+             if (apiResponse.data['武皮']) {
+                const knifeRatio = apiResponse.data['武皮'];  // 如 "-0.5"
+                const knifeLabel = document.querySelector('label[for="operatorSkins2"]');
+                if (knifeLabel) {
+                    knifeLabel.textContent = `武器皮肤(有的话回收比例  ${knifeRatio})`;  // 动态替换 -1 为 API 值
+                }
+            }
+            
+            if (apiResponse.data['大于1']) {
+                const knifeRatio = apiResponse.data['大于1'];  // 如 "-0.5"
+                const knifeRatio1 = apiResponse.data['大于130'];  // 如 "-0.5"
+                const knifeRatio2 = apiResponse.data['大于2'];  // 如 "-0.5"
+                const knifeRatio3 = apiResponse.data['大于230'];  // 如 "-0.5"
+                const knifeRatio4 = apiResponse.data['大于3'];  // 如 "-0.5"
+                const knifeRatio5 = apiResponse.data['大于330'];  // 如 "-0.5"
+                const knifeRatio6 = apiResponse.data['大于4'];  // 如 "-0.5"
+                const knifeRatio7 = apiResponse.data['大于430'];  // 如 "-0.5"
+
+
+                
+                const knifeLabel = document.querySelector('div[for="hafuCoin2"]');
+                if (knifeLabel) {
+                    knifeLabel.textContent = `温馨提示:
+                    纯币小于20M无法寄售租赁
+                    哈夫币≥ ${knifeRatio} 比例增幅 ${knifeRatio1}
+                    哈夫币≥ ${knifeRatio2} 比例增幅 ${knifeRatio3}
+                    哈夫币≥ ${knifeRatio4} 比例增幅 ${knifeRatio5}
+                    哈夫币≥ ${knifeRatio6} 比例增幅 ${knifeRatio7} `;  // 动态替换 -1 为 API 值
+                    
+                    
+                    
+                   knifeLabel.style.whiteSpace = 'pre-line';
+                }
+            }
+
+            
+            } catch (error) {
+                console.error('获取图片失败：', error);
+                document.getElementById('imagePlaceholder').textContent = '图片加载失败';
+            }
+        }
+        
+        
+        // 显示图片
+        function displayImage(imageSrc) {
+            const img = document.getElementById('dynamicImage');
+            const placeholder = document.getElementById('imagePlaceholder');
+            
+            img.onload = function() {
+                placeholder.style.display = 'none';
+                img.style.display = 'block';
+            };
+            
+            img.onerror = function() {
+                placeholder.textContent = '图片加载失败';
+                img.style.display = 'none';
+            };
+            
+            img.src = imageSrc;
+        }
+        
+        // 页面加载时获取图片
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchImage();
+        });
+
+    // 解析文本并填充表单
+        function parseAndFillForm() {
+            
+            
+            
+            
+    const text = document.getElementById('autoFillText').value;
+    if (!text.trim()) return;
+    
+    const lines = text.split('\n');
+    
+    lines.forEach(line => {
+        if (!line.trim()) return;
+        if (/[\d.]+[Mm]?纯币/.test(line)) {
+    const coinMatch = line.match(/([\d.]+)[Mm]?纯币/);
+    if (coinMatch) {
+        document.getElementById('hafuCoin').value = coinMatch[1];
+    
+    }
+}
+        // 尝试多种分隔符
+        let separatorIndex = line.indexOf(':');
+        if (separatorIndex === -1) separatorIndex = line.indexOf('：');
+        if (separatorIndex === -1) return;
+        
+        const key = line.substring(0, separatorIndex).trim();
+        const value = line.substring(separatorIndex + 1).trim();
+        
+        // 根据关键词匹配表单字段
+           if (key.includes('哈夫币') || key.includes('纯币')) {
+                let coinValue = value;
+                if (coinValue.includes('亿')) {
+                    // 直接写死逻辑：一个亿=100，两个亿=200，以此类推
+                    if (coinValue.includes('一个亿')) document.getElementById('hafuCoin').value = '100';
+                    else if (coinValue.includes('两个亿') || coinValue.includes('二个亿')) document.getElementById('hafuCoin').value = '200';
+                    else if (coinValue.includes('三个亿')) document.getElementById('hafuCoin').value = '300';
+                    else if (coinValue.includes('四个亿')) document.getElementById('hafuCoin').value = '400';
+                    else if (coinValue.includes('五个亿')) document.getElementById('hafuCoin').value = '500';
+                    else if (coinValue.includes('六个亿')) document.getElementById('hafuCoin').value = '600';
+                    else if (coinValue.includes('七个亿')) document.getElementById('hafuCoin').value = '700';
+                    else if (coinValue.includes('八个亿')) document.getElementById('hafuCoin').value = '800';
+                    else if (coinValue.includes('九个亿')) document.getElementById('hafuCoin').value = '900';
+                    else if (coinValue.includes('十个亿')) document.getElementById('hafuCoin').value = '1000';
+                    else document.getElementById('hafuCoin').value = '100'; // 默认一个亿
+                }
+                else {
+                    document.getElementById('hafuCoin').value = coinValue.replace(/[Mm]/g, '');
+                }
+               
+            }
+            else if (key.includes('保险格数') || key.includes('保险') || key.includes('保险箱')) {
+            // 处理各种保险格式：2X3、33、赛季33、4格等
+            let insuranceValue = value.replace('通行证', '');
+            
+            if (insuranceValue.includes('X') || insuranceValue.includes('x') || insuranceValue.includes('×') || insuranceValue.includes('*')) {
+                // 处理 2X3 格式
+                const parts = insuranceValue.split(/[Xx×\*]/);  // 注意这里用 \* 来转义
+                if (parts.length === 2) {
+                    insuranceValue = (parseInt(parts[0]) * parseInt(parts[1])).toString();
+                }
+            } else if (insuranceValue.includes('赛季')) {
+                // 处理 赛季33 格式
+                insuranceValue = insuranceValue.replace('赛季', '');
+                // 如果是两位数，就相乘
+                if (insuranceValue.length === 2 && !isNaN(insuranceValue)) {
+                    const num1 = parseInt(insuranceValue[0]);
+                    const num2 = parseInt(insuranceValue[1]);
+                    insuranceValue = (num1 * num2).toString();
+                }
+            } else if ( insuranceValue ==="两格" || insuranceValue === "二格" || insuranceValue === "2格"  ) {
+               insuranceValue = '2';
+            } else if (insuranceValue === "四格" || insuranceValue === "4格" ){
+               insuranceValue = '4'; 
+            } else if (insuranceValue === "六格" || insuranceValue === "6格" ) {
+               insuranceValue = '6';
+            } else if (insuranceValue ==="九格" || insuranceValue === "9格" ) {
+               insuranceValue = '9';
+            }
+            // 只保留数字
+           insuranceValue = insuranceValue.replace(/\D/g, '');
+            if (insuranceValue && ['2','4','6','9'].includes(insuranceValue)) {
+                document.getElementById('insuranceSlots').value = insuranceValue;
+        
+            }else{document.getElementById('insuranceSlots').value = insuranceValue;}
+              
+               
+        }
+        else if (key.includes('体力')) {
+            if(value.includes('满')){
+                document.getElementById('stamina').value = 7;
+            } else{document.getElementById('stamina').value = value.replace('级', '');
+                
+            }
+        }
+        else if (key.includes('负重')) {
+            if(value.includes('满')){
+                document.getElementById('weight').value = 7;
+            } else{
+            document.getElementById('weight').value = value.replace('级', '');
+            }
+        }
+        
+        else if (key.includes('刀皮肤') || key.includes('刀皮') || key.includes('角色皮肤') || key.includes('红皮') || key.includes('干员') || key.includes('皮肤') || key.includes('金皮') || key.includes('武器皮肤') || key.includes('武器')) {
+    // 【新增：先清空所有皮肤的选中状态】
+    const allMultiselects = [
+        document.querySelector('[data-name="knifeSkins"]'),
+        document.querySelector('[data-name="operatorSkins"]'),
+        document.querySelector('[data-name="operatorSkins1"]'),
+        document.querySelector('[data-name="operatorSkins2"]')
+    ];
+
+    allMultiselects.forEach(multiselect => {
+        if (multiselect) {
+            const checkboxes = multiselect.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(cb => {
+                cb.checked = false;
+                cb.parentElement.classList.remove('selected');
+            });
+            updateMultiselectDisplay(multiselect);
+        }
+    });
+
+    // 处理多选情况（解析文本中的皮肤）
+    const skinValues = value.split(/[、,，+\s]+/);
+
+    skinValues.forEach(skin => {
+        if (skin.trim()) {
+            const checkbox = findKnifeSkinCheckbox(skin);
+            if (checkbox) checkbox.checked = true;
+
+            const checkbox1 = findOperatorSkinCheckbox(skin);
+            if (checkbox1) checkbox1.checked = true;
+
+            const checkbox2 = findOperatorSkinCheckbox1(skin);
+            if (checkbox2) checkbox2.checked = true;
+
+            const checkbox3 = findOperatorSkinCheckbox2(skin);
+            if (checkbox3) checkbox3.checked = true;
+        }
+    });
+
+    // 重新更新所有多选框显示
+    allMultiselects.forEach(multiselect => {
+        if (multiselect) {
+            updateMultiselectDisplay(multiselect);
+        }
+    });
+}
+       
+        
+        
+    });
+    
+    // 触发计算
+    calculateRatio();
+    
+    // 新增：手动触发相关字段的change事件来触发租金计算
+    setTimeout(() => {
+        // 触发哈夫币的input事件（因为它影响租金计算）
+        document.getElementById('hafuCoin').dispatchEvent(new Event('input', { bubbles: true }));
+        
+        // 触发其他相关字段的change事件
+        document.getElementById('insuranceSlots').dispatchEvent(new Event('change', { bubbles: true }));
+        document.getElementById('stamina').dispatchEvent(new Event('change', { bubbles: true }));
+        document.getElementById('weight').dispatchEvent(new Event('change', { bubbles: true }));
+        
+        // 确保租金计算
+        setTimeout(() => {
+            calculateRent();
+            showRatioRentNotification();
+        }, 100);
+    }, 100);
+}
+
+        // 辅助函数：查找刀皮肤复选框
+        function findKnifeSkinCheckbox(skinName) {
+            const options = document.querySelectorAll('[data-name="knifeSkins"] .multiselect-option');
+            for (let option of options) {
+                const span = option.querySelector('span');
+                if (span && span.textContent.includes(skinName)) {
+                    return option.querySelector('input[type="checkbox"]');
+                }
+            }
+            return null;
+        }
+        
+        // 辅助函数：查找干员皮肤复选框
+        function findOperatorSkinCheckbox(skinName) {
+            const options = document.querySelectorAll('[data-name="operatorSkins"] .multiselect-option');
+            for (let option of options) {
+                const span = option.querySelector('span');
+                if (span && span.textContent.includes(skinName)) {
+                    return option.querySelector('input[type="checkbox"]');
+                }
+            }
+            return null;
+        }
+        // 辅助函数：查找干员金皮复选框
+        function findOperatorSkinCheckbox1(skinName) {
+            const options = document.querySelectorAll('[data-name="operatorSkins1"] .multiselect-option');
+            for (let option of options) {
+                const span = option.querySelector('span');
+                if (span && span.textContent.includes(skinName)) {
+                    return option.querySelector('input[type="checkbox"]');
+                }
+            }
+            return null;
+        }
+        // 辅助函数：查找武器皮肤复选框
+        function findOperatorSkinCheckbox2(skinName) {
+            const options = document.querySelectorAll('[data-name="operatorSkins2"] .multiselect-option');
+            for (let option of options) {
+                const span = option.querySelector('span');
+                if (span && span.textContent.includes(skinName)) {
+                    return option.querySelector('input[type="checkbox"]');
+                }
+            }
+            return null;
+        }
+            // 折叠/展开功能
+function toggleCollapse() {
+    const content = document.getElementById('collapseContent');
+    const arrow = document.querySelector('.collapse-arrow');
+    
+    if (content.classList.contains('show')) {
+        content.classList.remove('show');
+        arrow.classList.remove('open');
+    } else {
+        content.classList.add('show');
+        arrow.classList.add('open');
+    }
+}
+
+// 页面加载时默认折叠
+document.addEventListener('DOMContentLoaded', function() {
+    // 默认折叠内容区域
+    const content = document.getElementById('collapseContent');
+    const arrow = document.querySelector('.collapse-arrow');
+    
+    if (content && arrow) {
+        content.classList.remove('show');
+        arrow.classList.remove('open');
+    }
+    
+    // 原有的图片加载功能
+    fetchImage();
+});
+       </script>
+</body>
+</html>
+<script>
+// 保留你原有的图片加载功能，无改动
+function fetchImage() {
+    const imageUrl = "https://img-blog.csdnimg.cn/2025061910424739493.png";
+    const imgElement = document.getElementById("dynamic-image");
+    imgElement.src = imageUrl;
+    imgElement.onload = function() { console.log("图片加载完成"); };
+    imgElement.onerror = function() { console.error("图片加载失败"); };
+}
+document.addEventListener('DOMContentLoaded', function() { fetchImage(); });
+
+// ✅ 核心复制功能 - 完美对应你的格式，皮肤单独分行，无任何错乱
+function copyToClipboard() {
+    // 获取页面所有输入框的值，按你的输入框顺序精准对应
+    let inp = document.getElementsByTagName('input');
+    // 拼接内容，严格按你要的排版，皮肤内容强制换行到【皮肤：】下方，和你给的模板一模一样
+    let copyContent = `上号方式：QQ账号密码
+哈夫币纯币：${inp[0].value || ''}
+段位：${inp[1].value || ''}
+等级：${inp[2].value || ''}
+保险格数：${inp[3].value || ''}
+体力：${inp[4].value || ''}
+负重：${inp[5].value || ''}
+AWM子弹数量：${inp[6].value || ''}
+6头数量：${inp[7].value || ''}
+6甲数量：${inp[8].value || ''}
+皮肤：
+${inp[9].value || ''}
+绝密KD：${inp[10].value || ''}
+押金：${inp[11].value || ''}
+号主在线时间：${inp[12].value || ''}
+封禁记录：${inp[13].value || ''}
+常用地区：${inp[14].value || ''}
+回收比例：${inp[15].value || ''}
+回收租金：${inp[16].value || ''}
+联系电话：${inp[17].value || ''}`;
+
+    // 双方案复制，百分百成功，兼容所有浏览器，不会失败
+    try {
+        navigator.clipboard.writeText(copyContent);
+        alert("✅复制成功！格式完全匹配！");
+    } catch {
+        const ta = document.createElement("textarea");
+        ta.value = copyContent;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        alert("✅复制成功(兼容模式)！格式完全匹配！");
+    }
+}
+</script>

@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"path": "../../../../../web"
+		},
+		{
+			"path": "../../images(1)/images"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "web"
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			
+			{
+				"name": "Launch Chrome",
+				"request": "launch",
+				"type": "chrome",
+				"url": "http://localhost:8080",
+				"webRoot": "${workspaceFolder}"
+			}
+
+
+		]
+	}
+}
